@@ -67,7 +67,7 @@ parser.add_argument('--kbs', type=str, nargs='+', default=['carcinogenesis'],
                     help='Knowledge base name. Check the folder datasets to see all available knowledge bases')
 parser.add_argument('--models', type=str, nargs='+', default=['SetTransformer'], help='Neural models')
 parser.add_argument('--sampling_strategy', type=str, default='original', choices=['uniform', 'original'], help='The sampling strategy for sampling example subset sizes')
-parser.add_argument('--all_strategies', type=str, nargs='+', default='original', choices=['uniform', 'original'], help='Sampling strategies as a list')
+parser.add_argument('--all_strategies', type=str, nargs='+', default=['original'], choices=['uniform', 'original'], help='Sampling strategies as a list')
 parser.add_argument('--kb_emb_model', type=str, default='ConEx', help='Embedding model name')
 parser.add_argument('--load_pretrained', type=str2bool, default=False, help='Whether to load pretrained models')
 parser.add_argument('--learner_name', type=str, default="SetTransformer", choices=['LSTM', 'GRU', 'SetTransformer'], help='Neural model')
