@@ -367,6 +367,8 @@ class Experiment:
         for net in List_nets:
             self.synthesizer.learner_name = net
             desc = kb_emb_model+'_'+net
+            if self.kwargs.sampling_strategy == 'uniform':
+                desc = desc+'_uniform'
             self.synthesizer.refresh()
             if len(val_data):
                 train_soft_acc, train_hard_acc, train_l, val_soft_acc, val_hard_acc, val_l = self.train(train_data, val_data, test_data, epochs, test, save_model, kb_emb_model, optimizer, record_runtime, final)
@@ -378,6 +380,8 @@ class Experiment:
             if save_model:
                 with open(base_path+f"datasets/{self.kb}/Plot_data/"+desc+f"_inducing_points{self.synthesizer.model.num_inds}.json", "w") as plot_file:
                     json.dump(results, plot_file, indent=3)
+                print()
+                print(results)
             else:
                 print(results)
 

@@ -26,7 +26,7 @@ then
 cd Ontolearn, python -c 'from setuptools import setup; setup()' develop
 ```
 
-- To run search based algorithms CELOE, ELTL and ECII, first install Java 8+ and Maven 3.6.3+
+- To run CELOE from DL-Learner, first install Java 8+ and Maven 3.6.3+
 
 ## Reproducing the reported results
 

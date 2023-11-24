@@ -33,7 +33,7 @@ def str2bool(v):
     else:
         raise ValueError('Invalid boolean value.')
         
-def build_nces3_vocabulary(data_train, data_test, data_val, kb, args):
+def build_roces_vocabulary(data_train, data_test, data_val, kb, args):
     def add_data_values(path):
         print("\n*** Finding relevant data values ***")
         values = set()
@@ -67,6 +67,7 @@ parser.add_argument('--kbs', type=str, nargs='+', default=['carcinogenesis'],
                     help='Knowledge base name. Check the folder datasets to see all available knowledge bases')
 parser.add_argument('--models', type=str, nargs='+', default=['SetTransformer'], help='Neural models')
 parser.add_argument('--sampling_strategy', type=str, default='original', choices=['uniform', 'original'], help='The sampling strategy for sampling example subset sizes')
+parser.add_argument('--all_strategies', type=str, nargs='+', default='original', choices=['uniform', 'original'], help='Sampling strategies as a list')
 parser.add_argument('--kb_emb_model', type=str, default='ConEx', help='Embedding model name')
 parser.add_argument('--load_pretrained', type=str2bool, default=False, help='Whether to load pretrained models')
 parser.add_argument('--learner_name', type=str, default="SetTransformer", choices=['LSTM', 'GRU', 'SetTransformer'], help='Neural model')
@@ -105,30 +106,32 @@ print("Config: ", vars(args))
 
 with open(f"config.json", "w") as config:
     json.dump(vars(args), config)
-
-for kb in args.kbs:
-    KB = KnowledgeBase(path=f"datasets/{kb}/{kb}.owl")
-    data_path = f"datasets/{kb}/Train_data/Data.json"
-    with open(data_path, "r") as file:
-        data = json.load(file)
-    if not args.validate:
-        train_data = data
-        val_data = []
-    else:
-        train_data, val_data = train_test_split(data, test_size=0.2, random_state = 42)
-    test_data_path = f"datasets/{kb}/Test_data/Data.json"
-    with open(test_data_path, "r") as file:
-        test_data = json.load(file)
-    vocab, num_examples = build_nces3_vocabulary(train_data, test_data, val_data, KB, args)
-    args.knowledge_base_path = f"datasets/{kb}/{kb}.owl"
-    args.path_to_triples = f"datasets/{kb}/Triples/"
-    for num_inds in args.all_num_inds:
-        args.num_inds = num_inds
-        experiment = Experiment(vocab, num_examples, args)
-        final = args.final
-        test = args.test
-        if args.final:
-            train_data = train_data + test_data
-            test = False
-        experiment.train_all_nets(args.models, train_data, val_data, test_data, epochs=args.epochs, test=test, save_model=args.save_model,
-                                  kb_emb_model=args.kb_emb_model, optimizer=args.opt, record_runtime=True, final=final)
+    
+for sampling_strategy in args.all_strategies:
+    args.sampling_strategy = sampling_strategy
+    for kb in args.kbs:
+        KB = KnowledgeBase(path=f"datasets/{kb}/{kb}.owl")
+        data_path = f"datasets/{kb}/Train_data/Data.json"
+        with open(data_path, "r") as file:
+            data = json.load(file)
+        if not args.validate:
+            train_data = data
+            val_data = []
+        else:
+            train_data, val_data = train_test_split(data, test_size=0.2, random_state = 42)
+        test_data_path = f"datasets/{kb}/Test_data/Data.json"
+        with open(test_data_path, "r") as file:
+            test_data = json.load(file)
+        vocab, num_examples = build_roces_vocabulary(train_data, test_data, val_data, KB, args)
+        args.knowledge_base_path = f"datasets/{kb}/{kb}.owl"
+        args.path_to_triples = f"datasets/{kb}/Triples/"
+        for num_inds in args.all_num_inds:
+            args.num_inds = num_inds
+            experiment = Experiment(vocab, num_examples, args)
+            final = args.final
+            test = args.test
+            if args.final:
+                train_data = train_data + test_data
+                test = False
+            experiment.train_all_nets(args.models, train_data, val_data, test_data, epochs=args.epochs, test=test, save_model=args.save_model,
+                                      kb_emb_model=args.kb_emb_model, optimizer=args.opt, record_runtime=True, final=final)
