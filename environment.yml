@@ -1,4 +1,4 @@
-name: nces
+name: roces
 channels:
   - pytorch
   - anaconda
@@ -236,4 +236,4 @@ dependencies:
     - xxhash==3.0.0
     - yarl==1.7.2
     - zipp==3.8.1
-prefix: /home/nkouagou/.conda/envs/nces
+prefix: /home/nkouagou/.conda/envs/roces
