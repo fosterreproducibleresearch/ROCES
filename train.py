@@ -63,7 +63,7 @@ def build_roces_vocabulary(data_train, data_test, data_val, kb, args):
     return vocab, num_examples
         
 parser = argparse.ArgumentParser()
-parser.add_argument('--kbs', type=str, nargs='+', default=['carcinogenesis'],
+parser.add_argument('--kbs', type=str, nargs='+', default=['carcinogenesis'], choices=['carcinogenesis', 'mutagenesis', 'vicodi', 'semantic_bible'],
                     help='Knowledge base name. Check the folder datasets to see all available knowledge bases')
 parser.add_argument('--models', type=str, nargs='+', default=['SetTransformer'], help='Neural models')
 parser.add_argument('--sampling_strategy', type=str, default='original', choices=['uniform', 'original'], help='The sampling strategy for sampling example subset sizes')
@@ -84,7 +84,7 @@ parser.add_argument('--num_seeds', type=int, default=1, help='Number of seed com
 parser.add_argument('--num_examples', type=int, default=1000, help='Total number of examples for concept learning')
 parser.add_argument('--ln', type=str2bool, default=False, help='Whether to use layer normalization')
 parser.add_argument('--decay_rate', type=float, default=0.0, help='Decay rate for the optimizer')
-parser.add_argument('--grad_clip_value', type=float, default=5.0, help='Gradient clip value')
+parser.add_argument('--grad_clip_value', type=float, default=5.0, help='Gradient norm clip value')
 parser.add_argument('--opt', type=str, default='Adam', help='Name of the optimizer to use')
 parser.add_argument('--max_length', type=int, default=48, help='Maximum length of class expressions')
 parser.add_argument('--drop_prob', type=float, default=0.1, help='Dropout rate in neural networks')

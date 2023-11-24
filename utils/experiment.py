@@ -9,7 +9,7 @@ from .dataloader import BaseDataLoader, NCESDataLoader, HeadAndRelationBatchLoad
 from .data import Data
 from roces.synthesizer import ConceptSynthesizer
 from torch.optim.lr_scheduler import ExponentialLR
-from torch.nn.utils import clip_grad_value_
+from torch.nn.utils import clip_grad_norm_
 from torch.nn.utils.rnn import pad_sequence
 import time
 import random
@@ -160,8 +160,9 @@ class Experiment:
             train_losses.append(loss.item())
             opt.zero_grad()
             loss.backward()
-            clip_grad_value_(synthesizer.parameters(), clip_value=self.clip_value)
-            clip_grad_value_(embedding_model.parameters(), clip_value=self.clip_value)
+            clip_grad_norm_(synthesizer.parameters(), self.clip_value)
+            clip_grad_norm_(embedding_model.parameters(), self.clip_value)
+            
             opt.step()
             if self.decay_rate:
                 self.scheduler.step()
