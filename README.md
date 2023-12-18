@@ -28,6 +28,7 @@ cd Ontolearn && pip install -e .
 
 - To run CELOE from DL-Learner, first install Java 8+ and Maven 3.6.3+
 
+
 ## Dependencies
 1. python 3.9.0
 2. pandas 2.1.3
@@ -38,6 +39,7 @@ cd Ontolearn && pip install -e .
 7. transformers 4.35.2
 8. matplotlib 3.8.2
 9. seaborn 0.13.0
+
 
 ## Hardware:
 - Ran on Debian GNU/Linux 12 AMD EPYC 9334 32-Core Processor @ 3.91GHz (64 CPUs), 1xNvidia GPU A100 80GB, 1TB RAM
