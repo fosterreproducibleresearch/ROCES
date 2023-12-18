@@ -68,7 +68,7 @@ class NCESDataLoader(BaseDataLoader, torch.utils.data.Dataset):
         key, value = self.data_raw[idx]
         pos = value['positive examples']
         neg = value['negative examples']
-        if self.kwargs.sampling_strategy == 'uniform':
+        if self.kwargs.sampling_strategy != 'uniform':
             prob_pos_set = 1.0/(1+np.array(range(min(self.k, len(pos)), len(pos)+1, self.k)))#[1.0/(p+1) for p in range(min(5, len(pos)), len(pos)+1)]
             prob_pos_set = prob_pos_set/prob_pos_set.sum()
             prob_neg_set = 1.0/(1+np.array(range(min(self.k, len(neg)), len(neg)+1, self.k)))
@@ -87,7 +87,7 @@ class NCESDataLoader(BaseDataLoader, torch.utils.data.Dataset):
     
     
     
-class NCESDataLoaderInference(torch.utils.data.Dataset):
+class DatasetNoLabel(torch.utils.data.Dataset):
     
     """This class is similar to NCESDataLoader except that labels (class expression strings) are not needed here. This is useful for learning problems whose atoms are not present in the trained models. Still NCES instances are able to synthesize quality solutions as they do not rely on labels."""
     
@@ -120,9 +120,9 @@ class NCESDataLoaderInference(torch.utils.data.Dataset):
         datapoint_neg = self.embeddings[self.triples_data.entity2idx.loc[neg[:self.k]].values.squeeze()]
         return datapoint_pos, datapoint_neg
 
-class NCESDataLoaderInference2(BaseDataLoader, torch.utils.data.Dataset):
+class DatasetInference(BaseDataLoader, torch.utils.data.Dataset):
     def __init__(self, data, triples_data, k, vocab, inv_vocab, kwargs, random_sample=False):
-        super(NCESDataLoaderInference2, self).__init__(vocab, inv_vocab, kwargs)
+        super(DatasetInference, self).__init__(vocab, inv_vocab, kwargs)
         self.triples_data = triples_data
         self.data_raw = data
         self.vocab = vocab

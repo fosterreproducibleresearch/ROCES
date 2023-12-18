@@ -10,7 +10,7 @@ from owlapy.parser import DLSyntaxParser
 from owlapy.render import DLSyntaxObjectRenderer
 from argparse import Namespace
 import argparse
-from utils.dataloader import NCESDataLoaderInference
+from utils.dataset import DatasetNoLabel
 from utils.helper_funcs import get_lp_size, before_pad
 from utils.quality_computation import compute_quality
 from time import time
@@ -56,7 +56,7 @@ def collate_batch(batch):
 def get_dataloader(data, synthesizer, embedding_data, input_size, batch_size=64):
     global num_examples
     num_examples = synthesizer.model.num_examples
-    dataset = NCESDataLoaderInference(data, embedding_data, input_size)
+    dataset = DatasetNoLabel(data, embedding_data, input_size)
     dataset.load_embeddings(synthesizer.embedding_model)
     dataloader = DataLoader(dataset, collate_fn=collate_batch, batch_size=batch_size, shuffle=False)
     return dataloader

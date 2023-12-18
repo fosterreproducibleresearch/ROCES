@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 from collections import defaultdict
 from torch.utils.data import DataLoader
-from .dataloader import BaseDataLoader, NCESDataLoader, HeadAndRelationBatchLoader
+from .dataset import BaseDataLoader, NCESDataLoader, HeadAndRelationBatchLoader
 from .data import Data
 from roces.synthesizer import ConceptSynthesizer
 from torch.optim.lr_scheduler import ExponentialLR

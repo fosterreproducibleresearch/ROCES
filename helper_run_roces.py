@@ -7,7 +7,7 @@ from owlapy.render import DLSyntaxObjectRenderer
 from roces import BaseConceptSynthesis
 from roces.synthesizer import ConceptSynthesizer
 from owlapy.parser import DLSyntaxParser
-from dataloader import NCESDataLoaderInference2
+from utils.dataset import DatasetInference
 from torch.utils.data import DataLoader
 from torch.nn.utils.rnn import pad_sequence
 import torch.nn.functional as F
@@ -121,7 +121,7 @@ def predict(kb, test_data, models, embedding_models, repeat_pred, args):
         Scores = None
         print("k values:", k_values)
         for j,k in tqdm(enumerate(k_values), total=len(k_values), desc='sampling examples...'):
-            test_dataset = NCESDataLoaderInference2(test_data, kb_embedding_data, k, vocab, inv_vocab, args, random_sample=True)
+            test_dataset = DatasetInference(test_data, kb_embedding_data, k, vocab, inv_vocab, args, random_sample=True)
             for i, (model, embedding_model) in enumerate(zip(models, embedding_models)):
                 model = model.eval()
                 scores = []
@@ -145,7 +145,7 @@ def predict(kb, test_data, models, embedding_models, repeat_pred, args):
                 Scores = Scores + all_scores
         Scores = Scores / len(k_values)
     else:
-        test_dataset = NCESDataLoaderInference2(test_data, kb_embedding_data, num_examples, vocab, inv_vocab, args)
+        test_dataset = DatasetInference(test_data, kb_embedding_data, num_examples, vocab, inv_vocab, args)
         for i, (model, embedding_model) in enumerate(zip(models, embedding_models)):
             model = model.eval()
             scores = []
