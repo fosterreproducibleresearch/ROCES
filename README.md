@@ -6,7 +6,7 @@ Robust Class Expression Synthesis in Description Logics via Iterative Sampling
 
 Make sure Anaconda3 is installed in your working environment then run the following to install all required librairies for ROCES:
 ```
-conda env create -f environment.yml
+conda create -n roces python==3.9.0 --y && conda activate roces && pip install -r requirements.txt
 ```
 
 A conda environment (roces) will be created. Next activate the environment:
@@ -23,10 +23,25 @@ git clone --branch 0.5.4 --depth 1 https://github.com/dice-group/Ontolearn.git
 then
 
 ``` 
-cd Ontolearn, python -c 'from setuptools import setup; setup()' develop
+cd Ontolearn && pip install -e .
 ```
 
 - To run CELOE from DL-Learner, first install Java 8+ and Maven 3.6.3+
+
+## Dependencies
+1. python 3.9.0
+2. pandas 2.1.3
+3. pyarrow 14.0.1
+4. tqdm 4.66.1
+5. scikit-learn 1.3.2
+6. torch 2.1.1
+7. transformers 4.35.2
+8. matplotlib 3.8.2
+9. seaborn 0.13.0
+
+## Hardware:
+- Ran on Debian GNU/Linux 12 AMD EPYC 9334 32-Core Processor @ 3.91GHz (64 CPUs), 1xNvidia GPU A100 80GB, 1TB RAM
+- ROCES requires at least 12GB RAM to run on the benchmark datasets
 
 ## Reproducing the reported results
 
