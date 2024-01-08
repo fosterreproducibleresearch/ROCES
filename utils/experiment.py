@@ -203,6 +203,7 @@ class Experiment:
         desc1 = kb_emb_model+'_'+self.synthesizer.learner_name
         desc2 = self.synthesizer.learner_name+'_'+kb_emb_model+'_'+'Emb'
         if self.kwargs.sampling_strategy == 'uniform':
+            print("*** sampling strategy: uniform ***")
             desc1 = desc1 + '_uniform'
             desc2 = desc2 + '_uniform'
         if self.load_pretrained:
