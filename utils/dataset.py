@@ -2,8 +2,8 @@ import torch
 import random
 import numpy as np
 
-class BaseDataLoader:
-    """Supervised Machine Learning approach for learning class expressions in ALC from examples"""
+class BaseDataset:
+    """Supervised Machine Learning approach for learning class expressions in ALCHIQ(D) from examples"""
     
     def __init__(self, vocab, inv_vocab, kwargs):
         self.max_length = kwargs.max_length
@@ -47,9 +47,9 @@ class BaseDataLoader:
         labels = [self.vocab[atm] for atm in target]
         return labels, len(target)
 
-class NCESDataLoader(BaseDataLoader, torch.utils.data.Dataset):
+class DatasetROCES(BaseDataset, torch.utils.data.Dataset):
     def __init__(self, data, triples_data, vocab, inv_vocab, kwargs):
-        super(NCESDataLoader, self).__init__(vocab, inv_vocab, kwargs)
+        super(DatasetROCES, self).__init__(vocab, inv_vocab, kwargs)
         self.k = 5
         self.triples_data = triples_data
         self.data_raw = data
@@ -89,7 +89,7 @@ class NCESDataLoader(BaseDataLoader, torch.utils.data.Dataset):
     
 class DatasetNoLabel(torch.utils.data.Dataset):
     
-    """This class is similar to NCESDataLoader except that labels (class expression strings) are not needed here. This is useful for learning problems whose atoms are not present in the trained models. Still NCES instances are able to synthesize quality solutions as they do not rely on labels."""
+    """This class is similar to DatasetROCES except that labels (class expression strings) are not needed here. This is useful for learning problems whose atoms are not present in the trained models. Still NCES instances are able to synthesize quality solutions as they do not rely on labels."""
     
     def __init__(self, data, triples_data, k, random_sample=False):
         super().__init__()
@@ -120,7 +120,7 @@ class DatasetNoLabel(torch.utils.data.Dataset):
         datapoint_neg = self.embeddings[self.triples_data.entity2idx.loc[neg[:self.k]].values.squeeze()]
         return datapoint_pos, datapoint_neg
 
-class DatasetInference(BaseDataLoader, torch.utils.data.Dataset):
+class DatasetInference(BaseDataset, torch.utils.data.Dataset):
     def __init__(self, data, triples_data, k, vocab, inv_vocab, kwargs, random_sample=False):
         super(DatasetInference, self).__init__(vocab, inv_vocab, kwargs)
         self.triples_data = triples_data

@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 from collections import defaultdict
 from torch.utils.data import DataLoader
-from .dataset import BaseDataLoader, NCESDataLoader, HeadAndRelationBatchLoader
+from .dataset import BaseDataset, DatasetROCES, HeadAndRelationBatchLoader
 from .data import Data
 from roces.synthesizer import ConceptSynthesizer
 from torch.optim.lr_scheduler import ExponentialLR
@@ -50,11 +50,11 @@ class Experiment:
             arg1_ = arg1
             arg2_ = arg2
             if isinstance(arg1_, str):
-                arg1_ = set(self.before_pad(BaseDataLoader.decompose(arg1_)))
+                arg1_ = set(self.before_pad(BaseDataset.decompose(arg1_)))
             else:
                 arg1_ = set(self.before_pad(arg1_))
             if isinstance(arg2_, str):
-                arg2_ = set(self.before_pad(BaseDataLoader.decompose(arg2_)))
+                arg2_ = set(self.before_pad(BaseDataset.decompose(arg2_)))
             else:
                 arg2_ = set(self.before_pad(arg2_))
             return 100*float(len(arg1_.intersection(arg2_)))/len(arg1_.union(arg2_))
@@ -63,11 +63,11 @@ class Experiment:
             arg1_ = arg1
             arg2_ = arg2
             if isinstance(arg1_, str):
-                arg1_ = self.before_pad(BaseDataLoader.decompose(arg1_))
+                arg1_ = self.before_pad(BaseDataset.decompose(arg1_))
             else:
                 arg1_ = self.before_pad(arg1_)
             if isinstance(arg2_, str):
-                arg2_ = self.before_pad(BaseDataLoader.decompose(arg2_))
+                arg2_ = self.before_pad(BaseDataset.decompose(arg2_))
             else:
                 arg2_ = self.before_pad(arg2_)
             return 100*float(sum(map(lambda x,y: x==y, arg1_, arg2_)))/max(len(arg1_), len(arg2_))
@@ -248,9 +248,9 @@ class Experiment:
         if record_runtime:
             t0 = time.time()
             
-        train_dataset = NCESDataLoader(train_data, self.kb_embedding_data, self.synthesizer.model.vocab, self.synthesizer.model.inv_vocab, self.kwargs)
+        train_dataset = DatasetROCES(train_data, self.kb_embedding_data, self.synthesizer.model.vocab, self.synthesizer.model.inv_vocab, self.kwargs)
         if len(val_data):
-            val_dataset = NCESDataLoader(val_data, self.kb_embedding_data, self.synthesizer.model.vocab, self.synthesizer.model.inv_vocab, self.kwargs)
+            val_dataset = DatasetROCES(val_data, self.kb_embedding_data, self.synthesizer.model.vocab, self.synthesizer.model.inv_vocab, self.kwargs)
         emb_batch_iterator = 0
         for e in range(epochs):
             train_dataset.load_embeddings(embedding_model)
@@ -312,7 +312,7 @@ class Experiment:
                 
         results_dict = {"Synthesizer size": size1, "Embedding model size": size2}
         if test:
-            test_dataset = NCESDataLoader(test_data, self.kb_embedding_data, self.synthesizer.model.vocab, self.synthesizer.model.inv_vocab, self.kwargs)
+            test_dataset = DatasetROCES(test_data, self.kb_embedding_data, self.synthesizer.model.vocab, self.synthesizer.model.inv_vocab, self.kwargs)
             test_dataset.load_embeddings(embedding_model)
             test_dataloader = DataLoader(test_dataset, batch_size=self.batch_size, num_workers=self.num_workers, collate_fn=self.collate_batch, shuffle=False)
             print()

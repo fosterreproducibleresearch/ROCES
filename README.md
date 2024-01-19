@@ -31,8 +31,8 @@ cd Ontolearn && pip install -e .
 
 ## Dependencies
 1. python 3.9.0
-2. pandas 2.1.3
-3. pyarrow 14.0.1
+2. numpy 1.26.2
+3. pandas 2.1.3
 4. tqdm 4.66.1
 5. scikit-learn 1.3.2
 6. torch 2.1.1
@@ -52,12 +52,13 @@ cd Ontolearn && pip install -e .
 
 *Open a terminal in ROCES/*
 
-
 - To reproduce training curves and obtain the pretrained models we provided, run ``` python train.py ```; the default dataset is ` carcinogenesis `. To train on a different dataset, use ```--kbs ```, e.g., `--kbs vicodi`. Run `python train.py -h` to view all available options.
 
-- To reproduce the main results (Table 2, Figures 2 and 3), run: ``` python run_nces2_and_roces_incremental.py ```. Specify the approach `--approach roces`
+- To reproduce the main results (Table 2, Figures 1 and 2), run: ``` python run_nces2_and_roces_incremental.py ```. Specify the approach `--approach roces`
 
-- To reproduce results on learning problems with full example sets (Table 3), run: ``` python run_roces.py ```. Use -h for more options.
+- To reproduce results on learning problems with full example sets (Table 2), run: ``` python run_roces.py ```. Use -h for more options.
+
+- For the results reported in Table 3, please refer to the notebook roces_success_rate.ipynb
 
 
 ### NCES2 (Kouagou et al. 2023)
@@ -65,7 +66,7 @@ cd Ontolearn && pip install -e .
 *Open a terminal in ROCES/*
 - To reproduce the main results (Table 2, Figures 2 and 3), run: ``` python run_nces2_and_roces_incremental.py ```. Specify the approach `--approach nces2`
 
-- Results on learning problems with full example sets (Table 3) can be found in the original paper https://link.springer.com/chapter/10.1007/978-3-031-43421-1_12, Table 4
+- Results on learning problems with full example sets (Table 2) can be found in the original paper https://link.springer.com/chapter/10.1007/978-3-031-43421-1_12, Table 4
 
 
 ### EvoLearner (Heindorf et al. 2022)

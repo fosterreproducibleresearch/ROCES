@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('--kbs', type=str, nargs='+', default=['carcinogenesis'], choices=['carcinogenesis', 'mutagenesis', 'semantic_bible', 'vicodi'], help='Knowledge base name')
     parser.add_argument('--kb_emb_model', type=str, default="ConEx", help='KB embedding model')
     parser.add_argument('--repeat_pred', type=str2bool, default=False, help='Whether to use the repeated sampling technique')
-    parser.add_argument('--save_results', type=str2bool, default=False, help='Whether to save the evaluation results')
+    parser.add_argument('--save', type=str2bool, default=False, help='Whether to save the evaluation results')
     parser.add_argument('--verbose', type=str2bool, default=False, help='Whether to print the target and predicted class expressions')
     parser.add_argument('--sampling_strategy', type=str, default='original', help='The strategy to sample the number of examples k')
     args = parser.parse_args()
@@ -44,13 +44,13 @@ if __name__ == '__main__':
     nces_args.sampling_strategy = args.sampling_strategy
     for kb in args.kbs:
         print("*"*25 + " Evaluating ROCES " + "*"*25)
-        evaluate_ensemble(kb_name=kb, args=nces_args, repeat_pred=args.repeat_pred, save_results=args.save_results, verbose=args.verbose) # kb_name, args, emb_dim, save_results=False, verbose=False
+        evaluate_ensemble(kb_name=kb, args=nces_args, repeat_pred=args.repeat_pred, save_results=args.save, verbose=args.verbose)
         print("*"*25 + " Evaluating ROCES " + "*"*25+"\n")
         
     if args.repeat_pred:
         print("\n\n...")
         for kb in args.kbs:
             print("*"*25 + " Evaluating ROCES+ " + "*"*25)
-            evaluate_ensemble(kb_name=kb, args=nces_args, repeat_pred=args.repeat_pred, save_results=args.save_results, verbose=args.verbose)
+            evaluate_ensemble(kb_name=kb, args=nces_args, repeat_pred=args.repeat_pred, save_results=args.save, verbose=args.verbose)
             print("*"*25 + " Evaluating ROCES+ " + "*"*25+"\n")
             
