@@ -155,8 +155,8 @@ def evaluate_nces2_and_roces(kbs, kb_emb_model="ConEx", approach="roces", save=T
             nces_args.num_inds = num_inds
             synthesizer = initialize_synthesizer(vocab, num_examples, num_inds, nces_args)
             if approach == 'nces2':
-                synthesizer.load_pretrained(f"nces2/datasets/{kb}/Model_weights/{kb_emb_model}_SetTransformer_inducing_points{num_inds}.pt", 
-                                    f"nces2/datasets/{kb}/Model_weights/SetTransformer_{kb_emb_model}_Emb_inducing_points{num_inds}.pt")
+                synthesizer.load_pretrained(f"nces2/trained_models/{kb}/Model_weights/{kb_emb_model}_SetTransformer_inducing_points{num_inds}.pt", 
+                                    f"nces2/trained_models/{kb}/Model_weights/SetTransformer_{kb_emb_model}_Emb_inducing_points{num_inds}.pt")
             elif args.sampling_strategy != 'uniform':
                 synthesizer.load_pretrained(f"datasets/{kb}/Model_weights/{kb_emb_model}_SetTransformer_inducing_points{num_inds}.pt", 
                                 f"datasets/{kb}/Model_weights/SetTransformer_{kb_emb_model}_Emb_inducing_points{num_inds}.pt")

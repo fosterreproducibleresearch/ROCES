@@ -47,6 +47,9 @@ cd Ontolearn && pip install -e .
 
 ## Reproducing the reported results
 
+- First download datasets and pretrained models from [here](https://drive.google.com/file/d/1j5nlaCPugHAF5ggFO0cBHL7L2YgUkAcS/view?usp=sharing). Extract the Zip file into the top directory ROCES and make sure the resulting folder is named `datasets`.
+
+
 ### ROCES (Ours)
 
 
